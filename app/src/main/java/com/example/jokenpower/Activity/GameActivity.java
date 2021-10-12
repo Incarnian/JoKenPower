@@ -2,7 +2,9 @@ package com.example.jokenpower.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -10,22 +12,22 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.jokenpower.Model.Player;
+import com.example.jokenpower.Model.Upgrade;
 import com.example.jokenpower.R;
 
 import java.util.Random;
 
 public class GameActivity extends AppCompatActivity {
 
-    private TextView textName;
-    private TextView textGold;
+    private TextView textName, textGold;
+
+    private TextView textInfo;
 
     private Button buttonPedra, buttonPapel, buttonTesoura;
-    private Button buy1, buy2;
-
-    private LinearLayout linearBuy1;
-    private LinearLayout linearBuy2;
+    private Button buttonLoja;
 
     private boolean vitoria = false;
+
 
 
     @Override
@@ -33,25 +35,21 @@ public class GameActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
-        //Pegando os dados da MainAcitivity
         Bundle dados = getIntent().getExtras();
         Player player = (Player) dados.getSerializable("player");
 
         textName = findViewById(R.id.textNome);
         textGold = findViewById(R.id.textGold);
 
+        textInfo = findViewById(R.id.textInfo);
+
         buttonPedra = findViewById(R.id.buttonPedra);
         buttonPapel = findViewById(R.id.buttonPapel);
         buttonTesoura = findViewById(R.id.buttonTesoura);
 
-        buy1 = findViewById(R.id.buttonBuy1);
-        linearBuy1 = findViewById(R.id.linearBuy1);
-        buy2 = findViewById(R.id.buttonBuy2);
-        linearBuy2 = findViewById(R.id.linearBuy2);
+        buttonLoja = findViewById(R.id.buttonLoja);
 
-        textName.setText(player.getName().toString());
-        textGold.setText("Ouro: "+player.getGold());
-
+        //Verifica os resultados para Pedra
         buttonPedra.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -71,7 +69,7 @@ public class GameActivity extends AppCompatActivity {
                 }
             }
         });
-
+        //Verifica os resultados para Papel
         buttonPapel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -91,7 +89,7 @@ public class GameActivity extends AppCompatActivity {
                 }
             }
         });
-
+        //Verifica os resultados para Tesoura
         buttonTesoura.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -111,48 +109,14 @@ public class GameActivity extends AppCompatActivity {
                 }
             }
         });
-
-        buy1.setOnClickListener(new View.OnClickListener() {
+        //Vai para a activity loja passando o objeto player
+        buttonLoja.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (linearBuy1.getAlpha() != 0.3f) {
-                    if (player.getGold() >= 10) {
-                        linearBuy1.setAlpha(0.3f);
-                        player.buyItem(10);
-                        textGold.setText("Ouro: " + player.getGold());
-                        Toast.makeText(getApplicationContext(), "Item comprado", Toast.LENGTH_SHORT).show();
-                        player.addGoldPerWin(1);
-                        player.calculateGoldPerWin();
-                    } else {
-                        Toast.makeText(getApplicationContext(), "Dinheiro insuficiente", Toast.LENGTH_SHORT).show();
-                    }
-
-                }
-                else {
-                    Toast.makeText(getApplicationContext(), "Item já foi comprado", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-        buy2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (linearBuy2.getAlpha() != 0.3f) {
-                    if (player.getGold() >= 20) {
-                        linearBuy2.setAlpha(0.3f);
-                        player.buyItem(20);
-                        textGold.setText("Ouro: " + player.getGold());
-                        Toast.makeText(getApplicationContext(), "Item comprado", Toast.LENGTH_SHORT).show();
-                        player.multGoldPerWin(1);
-                        player.calculateGoldPerWin();
-                    } else {
-                        Toast.makeText(getApplicationContext(), "Dinheiro insuficiente", Toast.LENGTH_SHORT).show();
-                    }
-
-                }
-                else {
-                    Toast.makeText(getApplicationContext(), "Item já foi comprado", Toast.LENGTH_SHORT).show();
-                }
+                Intent intent = new Intent(getApplicationContext(), MarketActivity.class);
+                intent.putExtra("player",player);
+                GameActivity.this.finish();
+                startActivity(intent);
             }
         });
 
@@ -160,6 +124,28 @@ public class GameActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        Bundle dados = getIntent().getExtras();
+        Player player = (Player) dados.getSerializable("player");
+
+        textName.setText(player.getName().toString());
+        textGold.setText("Ouro: "+player.getGold());
+
+        //Texto usado em formato html para poder deixar com cores diferentes
+        String text;
+        text = "Ouro base: <font color = 'yellow'>"+ player.getBaseWin()+"</font>"
+        + "<br>Multiplicador: <font color = 'blue'>"+ player.getMultWin() +"</font>"
+        +"<br>Ouro por vitória: <font color = 'coral'>" +player.getGoldPerWin()+"</font>"
+        + "<br>Crítico: <font color = 'red'>"+ player.getCritChance() + "%</font>";
+
+        textInfo.setText(Html.fromHtml(text));
+
+    }
+
+    //Função para realizar o sorteio
     public String sorteio() {
         Random random = new Random();
         String result;

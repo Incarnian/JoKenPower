@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.JoKenPower">
         <activity
+            android:name=".Activity.MarketActivity"
+            android:exported="true" />
+        <activity
             android:name=".Activity.GameActivity"
             android:exported="true" />
         <activity
