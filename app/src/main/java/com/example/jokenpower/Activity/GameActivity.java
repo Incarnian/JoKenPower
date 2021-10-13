@@ -7,10 +7,12 @@ import android.os.Bundle;
 import android.text.Html;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.jokenpower.Enums.GameChoices;
 import com.example.jokenpower.Model.Player;
 import com.example.jokenpower.Model.Upgrade;
 import com.example.jokenpower.R;
@@ -19,16 +21,10 @@ import java.util.Random;
 
 public class GameActivity extends AppCompatActivity {
 
-    private TextView textName, textGold;
-
-    private TextView textInfo;
-
-    private Button buttonPedra, buttonPapel, buttonTesoura;
-    private Button buttonLoja;
+    private ImageView rockBtn, paperBtn, scissorsBtn, shopIcon, cpuImg;
+    private TextView textName, textGold, textInfo, textResult;
 
     private boolean vitoria = false;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,88 +36,27 @@ public class GameActivity extends AppCompatActivity {
 
         textName = findViewById(R.id.textNome);
         textGold = findViewById(R.id.textGold);
-
+        textResult = findViewById(R.id.text_result);
         textInfo = findViewById(R.id.textInfo);
 
-        buttonPedra = findViewById(R.id.buttonPedra);
-        buttonPapel = findViewById(R.id.buttonPapel);
-        buttonTesoura = findViewById(R.id.buttonTesoura);
+        rockBtn = findViewById(R.id.rock_btn);
+        paperBtn = findViewById(R.id.paper_btn);
+        scissorsBtn = findViewById(R.id.scissors_btn);
+        cpuImg = findViewById(R.id.cpu_choice);
 
-        buttonLoja = findViewById(R.id.buttonLoja);
+        shopIcon = findViewById(R.id.shop_icon);
 
-        //Verifica os resultados para Pedra
-        buttonPedra.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String computerResult = sorteio();
+        rockBtn.setOnClickListener(v -> determineWinner(GameChoices.ROCK, player));
+        paperBtn.setOnClickListener(v -> determineWinner(GameChoices.PAPER, player));
+        scissorsBtn.setOnClickListener(v -> determineWinner(GameChoices.SCISSORS, player));
 
-                if(computerResult.equals("Pedra")) {
-                    Toast.makeText(getApplicationContext(), "Empate: Pedra x "+computerResult, Toast.LENGTH_SHORT).show();
-                }
-
-                else if(computerResult.equals("Papel")) {
-                    Toast.makeText(getApplicationContext(), "Você perdeu: Pedra x "+computerResult, Toast.LENGTH_SHORT).show();
-                }
-                else {
-                    Toast.makeText(getApplicationContext(), "Voce vendeu! Pedra x "+computerResult, Toast.LENGTH_SHORT).show();
-                    player.earnGold();
-                    textGold.setText("Ouro: "+player.getGold());
-                }
-            }
+        // Vai para a activity loja passando o objeto player
+        shopIcon.setOnClickListener(v -> {
+            Intent intent = new Intent(getApplicationContext(), MarketActivity.class);
+            intent.putExtra("player",player);
+            GameActivity.this.finish();
+            startActivity(intent);
         });
-        //Verifica os resultados para Papel
-        buttonPapel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String computerResult = sorteio();
-
-                if(computerResult.equals("Papel")) {
-                    Toast.makeText(getApplicationContext(), "Empate: Papel x "+computerResult, Toast.LENGTH_SHORT).show();
-                }
-
-                else if(computerResult.equals("Tesoura")) {
-                    Toast.makeText(getApplicationContext(), "Você perdeu: Papel x "+computerResult, Toast.LENGTH_SHORT).show();
-                }
-                else {
-                    Toast.makeText(getApplicationContext(), "Voce vendeu! Papel x "+computerResult, Toast.LENGTH_SHORT).show();
-                    player.earnGold();
-                    textGold.setText("Ouro: "+player.getGold());
-                }
-            }
-        });
-        //Verifica os resultados para Tesoura
-        buttonTesoura.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String computerResult = sorteio();
-
-                if(computerResult.equals("Tesoura")) {
-                    Toast.makeText(getApplicationContext(), "Empate: Tesoura x "+computerResult, Toast.LENGTH_SHORT).show();
-                }
-
-                else if(computerResult.equals("Pedra")) {
-                    Toast.makeText(getApplicationContext(), "Você perdeu: Tesoura x "+computerResult, Toast.LENGTH_SHORT).show();
-                }
-                else {
-                    Toast.makeText(getApplicationContext(), "Voce vendeu! Tesoura x "+computerResult, Toast.LENGTH_SHORT).show();
-                    player.earnGold();
-                    textGold.setText("Ouro: "+player.getGold());
-                }
-            }
-        });
-        //Vai para a activity loja passando o objeto player
-        buttonLoja.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), MarketActivity.class);
-                intent.putExtra("player",player);
-                GameActivity.this.finish();
-                startActivity(intent);
-            }
-        });
-
-
-
     }
 
     @Override
@@ -132,7 +67,7 @@ public class GameActivity extends AppCompatActivity {
         Player player = (Player) dados.getSerializable("player");
 
         textName.setText(player.getName().toString());
-        textGold.setText("Ouro: "+player.getGold());
+        textGold.setText(String.valueOf(player.getGold()));
 
         //Texto usado em formato html para poder deixar com cores diferentes
         String text;
@@ -145,20 +80,80 @@ public class GameActivity extends AppCompatActivity {
 
     }
 
-    //Função para realizar o sorteio
-    public String sorteio() {
-        Random random = new Random();
-        String result;
-        int randomValue = random.nextInt(3);
-        if(randomValue==0) {
-            result = "Pedra";
+    private void determineWinner(GameChoices userChoice, Player player) {
+        GameChoices cpuChoice = null;
+
+        int randomValue = new Random().nextInt(3);
+        switch (randomValue) {
+            case 0:
+                cpuChoice = GameChoices.ROCK;
+                break;
+            case 1:
+                cpuChoice = GameChoices.PAPER;
+                break;
+
+            case 2:
+                cpuChoice = GameChoices.SCISSORS;
+                break;
         }
-        else if(randomValue==1) {
-            result = "Papel";
+
+        if(userChoice == GameChoices.ROCK) {
+            if(cpuChoice == GameChoices.ROCK) {
+                cpuImg.setImageResource(R.drawable.pedra);
+                textResult.setText("EMPATE!");
+            }
+
+            if(cpuChoice == GameChoices.PAPER) {
+                cpuImg.setImageResource(R.drawable.papel);
+                textResult.setText("VOCÊ PERDEU!");
+            }
+
+            if(cpuChoice == GameChoices.SCISSORS) {
+                player.earnGold();
+                textGold.setText(String.valueOf(player.getGold()));
+                cpuImg.setImageResource(R.drawable.tesoura);
+                textResult.setText("VOCÊ GANHOU!");
+
+            }
         }
-        else {
-            result = "Tesoura";
+
+        if(userChoice == GameChoices.PAPER) {
+            if(cpuChoice == GameChoices.PAPER) {
+                cpuImg.setImageResource(R.drawable.papel);
+                textResult.setText("EMPATE!");
+            }
+
+            if(cpuChoice == GameChoices.SCISSORS) {
+                cpuImg.setImageResource(R.drawable.tesoura);
+                textResult.setText("VOCÊ PERDEU!");
+            }
+
+            if(cpuChoice == GameChoices.ROCK) {
+                player.earnGold();
+                textGold.setText(String.valueOf(player.getGold()));
+                cpuImg.setImageResource(R.drawable.pedra);
+                textResult.setText("VOCÊ GANHOU!");
+            }
         }
-        return result;
+
+        if(userChoice == GameChoices.SCISSORS) {
+            if(cpuChoice == GameChoices.SCISSORS) {
+                cpuImg.setImageResource(R.drawable.tesoura);
+                textResult.setText("EMPATE!");
+            }
+
+            if(cpuChoice == GameChoices.ROCK) {
+                cpuImg.setImageResource(R.drawable.pedra);
+                textResult.setText("VOCÊ PERDEU!");
+            }
+
+            if(cpuChoice == GameChoices.PAPER) {
+                player.earnGold();
+                textGold.setText(String.valueOf(player.getGold()));
+                cpuImg.setImageResource(R.drawable.papel);
+                textResult.setText("VOCÊ GANHOU!");
+            }
+        }
+
     }
 }

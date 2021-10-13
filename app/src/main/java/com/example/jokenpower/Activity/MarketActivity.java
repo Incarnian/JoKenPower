@@ -120,8 +120,9 @@ public class MarketActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), GameActivity.class);
-                intent.putExtra("player",player);
+                intent.putExtra("player", player);
                 startActivity(intent);
+                finish();
             }
         });
    }
