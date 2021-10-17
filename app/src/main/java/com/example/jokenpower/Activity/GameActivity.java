@@ -3,6 +3,7 @@ package com.example.jokenpower.Activity;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.View;
@@ -23,6 +24,8 @@ public class GameActivity extends AppCompatActivity {
 
     private ImageView rockBtn, paperBtn, scissorsBtn, shopIcon, cpuImg;
     private TextView textName, textGold, textInfo, textResult;
+
+    private MediaPlayer mediaPlayer;
 
     private boolean vitoria = false;
 
@@ -50,6 +53,7 @@ public class GameActivity extends AppCompatActivity {
         paperBtn.setOnClickListener(v -> determineWinner(GameChoices.PAPER, player));
         scissorsBtn.setOnClickListener(v -> determineWinner(GameChoices.SCISSORS, player));
 
+
         // Vai para a activity loja passando o objeto player
         shopIcon.setOnClickListener(v -> {
             Intent intent = new Intent(getApplicationContext(), MarketActivity.class);
@@ -69,7 +73,9 @@ public class GameActivity extends AppCompatActivity {
         textName.setText(player.getName().toString());
         textGold.setText(String.valueOf(player.getGold()));
 
-        //Texto usado em formato html para poder deixar com cores diferentes
+        mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.faroeste2);
+        playMusic();
+                //Texto usado em formato html para poder deixar com cores diferentes
         String text;
         text = "Ouro base: <font color = 'yellow'>"+ player.getBaseWin()+"</font>"
         + "<br>Multiplicador: <font color = 'blue'>"+ player.getMultWin() +"</font>"
@@ -155,5 +161,25 @@ public class GameActivity extends AppCompatActivity {
             }
         }
 
+    }
+
+    private void playMusic() {
+        if( mediaPlayer != null) {
+            mediaPlayer.setLooping(true);
+            mediaPlayer.start();
+        }
+    }
+
+    protected void onStop() {
+        super.onStop();
+        if( mediaPlayer.isPlaying()) {
+            mediaPlayer.pause();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mediaPlayer.release();
     }
 }

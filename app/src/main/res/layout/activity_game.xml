@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".Activity.GameActivity">
+    tools:context=".Activity.GameActivity"
+    android:background="@drawable/cowboy2">
 
     <TextView
         android:id="@+id/textNome"
@@ -47,6 +48,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:text="Informações do jogador"
+        android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
@@ -84,10 +86,13 @@
         app:srcCompat="@drawable/tesoura" />
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/textView6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Escolha do app"
+        android:textColor="#000000"
+        android:textSize="20sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/paper_btn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
@@ -102,7 +107,7 @@
         app:layout_constraintBottom_toTopOf="@+id/paper_btn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView4"
+        app:layout_constraintTop_toBottomOf="@+id/textView6"
         app:layout_constraintVertical_bias="0.117"
         app:srcCompat="@drawable/padrao" />
 
@@ -116,7 +121,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.012"
-        app:srcCompat="@drawable/shop" />
+        app:srcCompat="@drawable/treasure" />
 
     <TextView
         android:id="@+id/text_result"

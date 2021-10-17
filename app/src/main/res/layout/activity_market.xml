@@ -6,16 +6,70 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".Activity.GameActivity">
+    tools:context=".Activity.GameActivity"
+    android:background="@drawable/cowboy3">
 
-    <Button
-        android:id="@+id/buttonVoltar"
+    <LinearLayout
+        android:id="@id/linearLayout5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout5"
+        tools:layout_editor_absoluteX="141dp">
+
+        <Button
+            android:id="@+id/buttonComprar5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_weight="0"
+            android:backgroundTint="@color/buttons"
+            android:text="Comprar" /><![CDATA[/>
+
+        ]]>
+
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="16dp"
+            android:layout_weight="1"
+            android:text="+1 Ouro,  +1 Multiplicador, +20% Crítico Custo: 1000g"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/imageSword"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_back_arrow" />
+
+    <ImageView
+        android:id="@+id/imageGold"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="128dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/coin" />
+
+    <TextView
+        android:id="@+id/textOuro"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:text="Voltar"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="19dp"
+        android:text="Ouro"
+        android:textSize="20sp"
+        app:layout_constraintStart_toEndOf="@+id/imageGold"
         app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
@@ -33,6 +87,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
             android:layout_weight="0"
+            android:backgroundTint="@color/buttons"
             android:text="Comprar" />
 
         <TextView
@@ -43,7 +98,9 @@
             android:layout_marginLeft="8dp"
             android:layout_marginRight="16dp"
             android:layout_weight="1"
-            android:text="Aumenta seu dano base em 1 por 10 de ouro" />
+            android:text="+1 Ouro, Custo: 10g"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
 
     </LinearLayout>
 
@@ -61,7 +118,8 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
             android:layout_weight="0"
-            android:text="Comprar" />
+            android:text="Comprar"
+            android:backgroundTint="@color/buttons"/>/>
 
         <TextView
             android:id="@+id/textView2"
@@ -71,10 +129,13 @@
             android:layout_marginLeft="8dp"
             android:layout_marginRight="16dp"
             android:layout_weight="1"
-            android:text="Aumenta o seu dano em 100% por 20 de Ouro" />
+            android:text="+1 Multiplicador, Custo: 20g"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/linearLayout4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -87,7 +148,8 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
             android:layout_weight="0"
-            android:text="Comprar" />
+            android:backgroundTint="@color/buttons"
+            android:text="Comprar" />/>
 
         <TextView
             android:id="@+id/textView3"
@@ -97,6 +159,41 @@
             android:layout_marginLeft="8dp"
             android:layout_marginRight="16dp"
             android:layout_weight="1"
-            android:text="Adiciona 10% de chance de crítico por 50 de Ouro" />
+            android:text="+10% Crítico, Custo: 50g"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
     </LinearLayout>
+
+    <LinearLayout
+        android:id="@id/linearLayout5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout4"
+        tools:layout_editor_absoluteX="141dp">
+
+        <Button
+            android:id="@+id/buttonComprar4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_weight="0"
+            android:backgroundTint="@color/buttons"
+            android:text="Comprar" /><![CDATA[/>
+
+        ]]>
+
+        <TextView
+            android:id="@+id/textView7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="16dp"
+            android:layout_weight="1"
+            android:text="+1 Ouro,  +1 Multiplicador, Custo: 100g"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+    </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
